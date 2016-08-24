@@ -1,5 +1,5 @@
-require(['ugly'], function(Ugly){
+require(['pages/home'], function(Home){
 
-	Ugly.init();
+	Home.init();
 	
 });

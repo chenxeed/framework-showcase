@@ -8,7 +8,6 @@ module.exports = {
 		publicPath: "dist/", // relative path for github pages
 		filename: "main.js", // no hash in main.js because index.html is a static page
 	},
-	recordsOutputPath: path.join(__dirname, "records.json"),
 	module: {
 		loaders: [
 			{
@@ -27,4 +26,5 @@ module.exports = {
     	root: path.join( __dirname, 'node_modules' )
     },
 	amd: { jQuery: true },
+	devtool: 'eval'
 };
