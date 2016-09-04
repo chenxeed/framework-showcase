@@ -1,5 +1,3 @@
-require(['pages/home'], function(Home){
+import Home from 'pages/home';
 
-	Home.init();
-	
-});
+Home.init();

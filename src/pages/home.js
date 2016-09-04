@@ -1,33 +1,27 @@
-define(['jquery'], function($){
+import {submit$} from 'component/form';
+import {updateList} from 'component/lists';
+import {getSearchInput$, setSearchInput} from 'data/search_input';
+import {getPost$, getPost} from 'data/posts';
 
-	let DATA = [];
+function init(){
+  // attach listener
+  submit$.addListener({
+    next: setSearchInput,
+    error: new Function,
+    complete: new Function
+  });
+  getSearchInput$.addListener({
+    next: getPost,
+    error: new Function,
+    complete: new Function
+  });
+  getPost$.addListener,({
+    next: updateList,
+    error: new Function,
+    complete: new Function
+  });
+}
 
-	function init(){
-		const $dom_button = $('#btn-search');
-		$dom_button.click(onClickButtonSearch);
-	};
-
-	function onClickButtonSearch(){
-		const $input = $('#input');
-		const value = $input.val();
-		$.ajax({
-			url : 'http://jsonplaceholder.typicode.com/posts',
-			success : function(data){
-				DATA = data;
-				showData();
-			}
-		});
-	}
-
-	function showData(){
-		DATA.forEach(function(row){
-			$('#list-data').append('<li>'+row.title+'</li>');
-		});
-	}
-
-	return {
-		init
-	};
-
-	
-});
+export default {
+  init
+};
