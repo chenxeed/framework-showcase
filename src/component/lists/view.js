@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 const $lists = $('#list-data');
+const $search_title = $('#search-title');
 
 // side-effect functions
 function clearList(){
@@ -9,12 +10,12 @@ function clearList(){
 
 function addList(data){
   data.forEach(function(row){
-    $('#list-data').append('<li>'+row.title+'</li>');
+    $lists.append('<li>'+row.title+'</li>');
   });
 }
 
 function updateSearchTitle(value){
-	$('#search-title').text(value);
+	$search_title.text(value);
 }
 
 // export

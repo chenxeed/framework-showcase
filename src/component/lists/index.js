@@ -8,5 +8,6 @@ function updateList(list) {
 
 // export
 export {
-	updateList
+	updateList,
+	updateSearchTitle
 }

@@ -10,8 +10,10 @@ define(['jquery'], function($){
 	function onClickButtonSearch(){
 		const $input = $('#input');
 		const $preview = $('#search-preview');
+		const $list_search_title = $('#search-title');
 		const value = $input.val();
 		$preview.text(value);
+		$list_search_title.text(value);
 		$.ajax({
 			url : 'http://jsonplaceholder.typicode.com/posts',
 			success : function(data){
