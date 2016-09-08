@@ -1,5 +1,4 @@
 import xs from 'xstream';
-import fromEvent from 'xstream/extra/fromEvent';
 import $ from 'jquery';
 
 function View( submit$ ) {
@@ -8,9 +7,6 @@ function View( submit$ ) {
 	const $btnSearch = $('#btn-search');
 	const $inputSearch = $('#input');
 	const $inputPreview = $('#search-preview');
-
-	// observable state
-	const clickBtnSearch$ = fromEvent($btnSearch[0], 'click');
 
 	// side-effect
 	submit$.addListener({
@@ -29,8 +25,7 @@ function View( submit$ ) {
 	}
 
 	return {
-	  // observable state
-	  clickBtnSearch$,
+    $btnSearch,
 	  // side effects
 	  getSearchValue,
 	  updateSearchPreview
@@ -39,4 +34,4 @@ function View( submit$ ) {
 
 
 // export
-export default View
+export default View;
