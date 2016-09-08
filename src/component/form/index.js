@@ -1,15 +1,13 @@
-import {clickBtnSearch$, getSearchValue, updateSearchPreview} from './view';
+import {clickBtnSearch$} from './view';
 
-const submit$ = clickBtnSearch$.map(getSearchValue);
+function Form( {formView} ) {
 
-// side effect action
-submit$.addListener({
-  next: updateSearchPreview,
-  error: new Function,
-  complete: new Function
-});
+  const submit$ = formView.clickBtnSearch$.map(formView.getSearchValue);
+
+  return {
+    submit$
+  }
+}
 
 // export
-export {
-  submit$
-}
+export default Form;

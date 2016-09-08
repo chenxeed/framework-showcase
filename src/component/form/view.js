@@ -2,28 +2,41 @@ import xs from 'xstream';
 import fromEvent from 'xstream/extra/fromEvent';
 import $ from 'jquery';
 
-// static elements
-const $btnSearch = $('#btn-search');
-const $inputSearch = $('#input');
-const $inputPreview = $('#search-preview');
+function View( submit$ ) {
 
-// observable state
-const clickBtnSearch$ = fromEvent($btnSearch[0], 'click');
+	// static elements
+	const $btnSearch = $('#btn-search');
+	const $inputSearch = $('#input');
+	const $inputPreview = $('#search-preview');
 
-// side-effect function
-function getSearchValue() {
-  return $inputSearch.val();
+	// observable state
+	const clickBtnSearch$ = fromEvent($btnSearch[0], 'click');
+
+	// side-effect
+	submit$.addListener({
+		next : updateSearchPreview,
+		error : () => {},
+		complete : () => {}
+	});
+
+	// side-effect function
+	function getSearchValue() {
+	  return $inputSearch.val();
+	}
+
+	function updateSearchPreview(value) {
+	  $inputPreview.text(value);
+	}
+
+	return {
+	  // observable state
+	  clickBtnSearch$,
+	  // side effects
+	  getSearchValue,
+	  updateSearchPreview
+	}
 }
 
-function updateSearchPreview(value) {
-  $inputPreview.text(value);
-}
 
 // export
-export {
-  // observable state
-  clickBtnSearch$,
-  // side effects
-  getSearchValue,
-  updateSearchPreview
-}
+export default View

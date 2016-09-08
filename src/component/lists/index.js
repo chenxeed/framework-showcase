@@ -8,6 +8,7 @@ function updateList(list) {
 
 // export
 export {
+	// side effect functions
 	updateList,
 	updateSearchTitle
 }

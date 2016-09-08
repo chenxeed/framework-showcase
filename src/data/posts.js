@@ -6,7 +6,7 @@ const getPost$ = xs.create();
 
 // getter
 function getPost(value){
-	$.ajax({
+	return $.ajax({
 		url : 'http://jsonplaceholder.typicode.com/posts'
 	}).done( (result) => getPost$.shamefullySendNext(result) );
 }
