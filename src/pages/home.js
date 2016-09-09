@@ -1,4 +1,5 @@
 import Cycle from '@cycle/xstream-run';
+import xs from 'xstream';
 
 import Form from 'component/form';
 import formView from 'component/form/view';
@@ -21,7 +22,7 @@ function start(){
       formView : formComponent.submit$,
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
-      listsView : postsData.get$
+      listsView : xs.combine( searchInputData.get$, postsData.get$ )
     };
 
   }

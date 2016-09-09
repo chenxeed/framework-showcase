@@ -13,7 +13,9 @@ function SearchInput( {searchInputData} ) {
 
 function searchInputData( source$ ) {
 
-  const get$ = source$;
+  const get$ = xs.createWithMemory();
+
+  get$.imitate( source$ );
 
   return {
     get$,

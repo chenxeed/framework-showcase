@@ -11,7 +11,7 @@ function Posts( {postsData} ) {
 }
 
 function postsData( source$ ) {
-  const get$ = xs.create();
+  const get$ = xs.createWithMemory();
 
   source$.addListener({
     next: (value) => get$.imitate( xs.fromPromise( getPost( value ) ) ),

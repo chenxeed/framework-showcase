@@ -1,16 +1,18 @@
 import xs from 'xstream';
 import $ from 'jquery';
 
-function View( data$ ) {
+function View( streams$ ) {
   // constant variable
   const $lists = $('#list-data');
   const $search_title = $('#search-title');
 
   // side-effect
-  data$.addListener({
-    next: (data) => {
+  streams$.addListener({
+    next: ([searchInput, posts]) => {
+      updateSearchTitle(searchInput);
       clearList();
-      addList(data);
+      addList(posts);
+
     },
     error : () => {},
     complete : () => {}
