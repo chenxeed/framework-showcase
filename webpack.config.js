@@ -15,6 +15,16 @@ module.exports = {
 	          exclude: /(node_modules)/,
 	          loader: 'babel' // 'babel-loader' is also a legal name to reference
 	        },
+			{
+	          test: /\.css$/,
+	          exclude: /(node_modules)/,
+	          loaders: ['style', 'css']
+	        },
+			{
+	          test: /\.html$/,
+	          exclude: /(node_modules)/,
+	          loaders: ['html']
+	        }
 		],
 	},
 	resolve: {

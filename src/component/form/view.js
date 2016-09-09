@@ -1,35 +1,40 @@
 import xs from 'xstream';
 import $ from 'jquery';
+import template from './template.html';
+import './style.css';
 
-function View( submit$ ) {
+function View( selector ) {
+  const $parent = $( selector );
+  return function( submit$ ) {
+    $parent.append(template);
+  	// static elements
+  	const $btnSearch = $('#btn-search');
+  	const $inputSearch = $('#input');
+  	const $inputPreview = $('#search-preview');
 
-	// static elements
-	const $btnSearch = $('#btn-search');
-	const $inputSearch = $('#input');
-	const $inputPreview = $('#search-preview');
+  	// side-effect
+  	submit$.addListener({
+  		next : updateSearchPreview,
+  		error : () => {},
+  		complete : () => {}
+  	});
 
-	// side-effect
-	submit$.addListener({
-		next : updateSearchPreview,
-		error : () => {},
-		complete : () => {}
-	});
+  	// side-effect function
+  	function getSearchValue() {
+  	  return $inputSearch.val();
+  	}
 
-	// side-effect function
-	function getSearchValue() {
-	  return $inputSearch.val();
-	}
+  	function updateSearchPreview(value) {
+  	  $inputPreview.text(value);
+  	}
 
-	function updateSearchPreview(value) {
-	  $inputPreview.text(value);
-	}
-
-	return {
-    $btnSearch,
-	  // side effects
-	  getSearchValue,
-	  updateSearchPreview
-	}
+  	return {
+  		$btnSearch,
+  	  // side effects
+  	  getSearchValue,
+  	  updateSearchPreview
+  	}
+  }
 }
 
 

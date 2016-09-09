@@ -26,7 +26,7 @@ function postsData( source$ ) {
   // side-effect functions
   function getPost(value){
     return $.ajax({
-      url : `http://jsonplaceholder.typicode.com/posts?title=${value}`
+      url : `http://jsonplaceholder.typicode.com/posts?title_like=${value}`
     });
   }  
 }

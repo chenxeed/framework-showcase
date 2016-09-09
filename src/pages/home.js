@@ -22,17 +22,19 @@ function start(){
       formView : formComponent.submit$,
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
-      listsView : xs.combine( searchInputData.get$, postsData.get$ )
+      listsView : searchInputData.get$.map( value =>
+        postsData.get$.map( data => [value, data] )
+      ).flatten()
     };
 
   }
 
   function driver( ) {
     return {
-      formView,
+      formView : formView('#form-component'),
+      listsView : listsView('#lists-component'),
       searchInputData,
-      postsData,
-      listsView
+      postsData
     }
   }
 
