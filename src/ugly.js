@@ -2,7 +2,7 @@ define(['jquery'], function($){
 
 	let DATA = [];
 
-	function init(){
+	function start(){
 		const $dom_button = $('#btn-search');
 		$dom_button.click(onClickButtonSearch);
 	};
@@ -12,25 +12,25 @@ define(['jquery'], function($){
 		const $preview = $('#search-preview');
 		const $list_search_title = $('#search-title');
 		const value = $input.val();
-		$preview.text(value);
-		$list_search_title.text(value);
-		$.ajax({
-			url : 'http://jsonplaceholder.typicode.com/posts',
-			success : function(data){
+		$preview.text(value || 'nothing');
+		$list_search_title.text(value || 'nothing');
+		$.ajax('http://jsonplaceholder.typicode.com/posts?title_like='+value)
+			.done(function(data){
 				DATA = data;
 				showData();
 			}
-		});
+		);
 	}
 
 	function showData(){
+		$('#list-data').empty();
 		DATA.forEach(function(row){
 			$('#list-data').append('<li>'+row.title+'</li>');
 		});
 	}
 
 	return {
-		init
+		start
 	};
 
 	
