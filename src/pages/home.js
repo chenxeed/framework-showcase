@@ -3,6 +3,9 @@ import Cycle from '@cycle/xstream-run';
 import Form from 'component/form';
 import formView from 'component/form/view';
 
+import Lists from 'component/lists';
+import listsView from 'component/lists/view';
+
 import {SearchInput, searchInputData} from 'data/search_input';
 import {Posts, postsData} from 'data/posts';
 
@@ -17,7 +20,8 @@ function start(){
     return {
       formView : formComponent.submit$,
       searchInputData : formComponent.submit$,
-      postsData : searchInputData.get$
+      postsData : searchInputData.get$,
+      listsView : postsData.get$
     };
 
   }
@@ -26,14 +30,13 @@ function start(){
     return {
       formView,
       searchInputData,
-      postsData
+      postsData,
+      listsView
     }
   }
 
   Cycle.run( main, driver() );
 }
-
-
 
 export default {
   start

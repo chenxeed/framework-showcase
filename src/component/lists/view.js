@@ -1,27 +1,40 @@
+import xs from 'xstream';
 import $ from 'jquery';
 
-const $lists = $('#list-data');
-const $search_title = $('#search-title');
+function View( data$ ) {
+  // constant variable
+  const $lists = $('#list-data');
+  const $search_title = $('#search-title');
 
-// side-effect functions
-function clearList(){
-  $('#list-data').empty();
-}
-
-function addList(data){
-  data.forEach(function(row){
-    $lists.append('<li>'+row.title+'</li>');
+  // side-effect
+  data$.addListener({
+    next: (data) => {
+      clearList();
+      addList(data);
+    },
+    error : () => {},
+    complete : () => {}
   });
-}
 
-function updateSearchTitle(value){
-	$search_title.text(value);
-}
+  // side-effect functions
+  function clearList(){
+    $('#list-data').empty();
+  }
 
-// export
-export {
-	// side effects
-	clearList,
-	addList,
-	updateSearchTitle
-}
+  function addList(data){
+    data.forEach(function(row){
+      $lists.append('<li>'+row.title+'</li>');
+    });
+  }
+
+  function updateSearchTitle(value){
+    $search_title.text(value);
+  }
+
+  return {
+    // side-effects
+    updateSearchTitle
+  }
+};
+
+export default View;
