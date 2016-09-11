@@ -1,11 +1,10 @@
 import Cycle from '@cycle/xstream-run';
+import {makeDOMDriver} from '@cycle/dom';
 import xs from 'xstream';
 
 import Form from 'component/form';
-import formView from 'component/form/view';
 
 import Lists from 'component/lists';
-import listsView from 'component/lists/view';
 
 import {SearchInput, searchInputData} from 'data/search_input';
 import {Posts, postsData} from 'data/posts';
@@ -14,27 +13,39 @@ function start(){
 
   function main( sources ) {
 
-    const formComponent = Form( sources );
-    const searchInputData = SearchInput( sources );
-    const postsData = Posts( sources );
+    // define components
+    const formComponent = Form( sources.formDOM );
+    const listsComponent = Lists({
+      data$ : sources.listsData
+    });
+    // define data
+    const searchInputData = SearchInput( sources.searchInputData );
+    const postsData = Posts( sources.postsData );
+    const listsData = searchInputData.get$.map( value =>
+      postsData.get$.map( data => [value, data] )
+    ).flatten();
 
     return {
-      formView : formComponent.submit$,
+      // components
+      formDOM : formComponent.vdom$,
+      listsDOM : listsComponent.vdom$,
+      // data
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
-      listsView : searchInputData.get$.map( value =>
-        postsData.get$.map( data => [value, data] )
-      ).flatten()
+      listsData : listsData
     };
 
   }
 
   function driver( ) {
     return {
-      formView : formView('#form-component'),
-      listsView : listsView('#lists-component'),
+      // component driver
+      formDOM : makeDOMDriver('#form-component'),
+      listsDOM : makeDOMDriver('#lists-component'),
+      // data driver
       searchInputData,
-      postsData
+      postsData,
+      listsData : (stream$) => { return stream$ }
     }
   }
 

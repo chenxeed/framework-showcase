@@ -1,12 +1,19 @@
-import fromEvent from 'xstream/extra/fromEvent';
+import xs from 'xstream';
+import vdom from './template.jsx';
+import './style.css';
 
-function Form( {formView} ) {
-  const {$btnSearch} = formView;
+function Form( formDOM ) {
   
-  const click$ = fromEvent($btnSearch[0], 'click');
-  const submit$ = click$.map(formView.getSearchValue);
+  const searchInput$ = formDOM.select('#search-input').events('change').map(ev => ev.target.value);
+  const searchBtn$ = formDOM.select('#btn-search').events('click');
+
+  const submit$ = searchInput$.map( inputValue => searchBtn$.map( () => inputValue ) )
+    .flatten();
+
+  const vdom$ = submit$.startWith('nothing').map( vdom );
 
   return {
+    vdom$,
     submit$
   }
 }

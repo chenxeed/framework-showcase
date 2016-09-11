@@ -2,7 +2,7 @@ import xs from 'xstream';
 import $ from 'jquery';
 
 // observable state
-function Posts( {postsData} ) {
+function Posts( postsData ) {
   const get$ = postsData.get$;
 
   return {

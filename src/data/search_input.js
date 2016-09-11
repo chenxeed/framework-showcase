@@ -2,7 +2,7 @@ import xs from 'xstream';
 import $ from 'jquery';
 
 // observable state
-function SearchInput( {searchInputData} ) {
+function SearchInput( searchInputData ) {
 
   const get$ = searchInputData.get$;
 
