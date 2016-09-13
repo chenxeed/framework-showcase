@@ -3,21 +3,29 @@ import {makeDOMDriver} from '@cycle/dom';
 import xs from 'xstream';
 
 import Form from 'component/form';
-
 import Lists from 'component/lists';
+import Todos from 'component/todos';
 
 import {SearchInput, searchInputData} from 'data/search_input';
 import {Posts, postsData} from 'data/posts';
+import {todosData} from 'data/todos';
 
 function start(){
 
   function main( sources ) {
 
     // define components
-    const formComponent = Form( sources.formDOM );
+    const formComponent = Form({
+      dom$ : sources.formDOM
+    });
     const listsComponent = Lists({
       data$ : sources.listsData
     });
+    const todosComponent = Todos({
+      dom$ : sources.todosDOM,
+      data$ : sources.todosData
+    });
+
     // define data
     const searchInputData = SearchInput( sources.searchInputData );
     const postsData = Posts( sources.postsData );
@@ -29,10 +37,12 @@ function start(){
       // components
       formDOM : formComponent.vdom$,
       listsDOM : listsComponent.vdom$,
+      todosDOM : todosComponent.vdom$,
       // data
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
-      listsData : listsData
+      listsData : listsData,
+      todosData : xs.merge( todosComponent.add$, todosComponent.remove$ )
     };
 
   }
@@ -42,10 +52,12 @@ function start(){
       // component driver
       formDOM : makeDOMDriver('#form-component'),
       listsDOM : makeDOMDriver('#lists-component'),
+      todosDOM : makeDOMDriver('#todos-component'),
       // data driver
       searchInputData,
       postsData,
-      listsData : (stream$) => { return stream$ }
+      listsData : (stream$) => { return stream$ },
+      todosData
     }
   }
 

@@ -1,11 +1,10 @@
-import xs from 'xstream';
 import vdom from './template.jsx';
 import './style.css';
 
-function Form( formDOM ) {
+function Form( {dom$} ) {
   
-  const searchInput$ = formDOM.select('#search-input').events('change').map(ev => ev.target.value);
-  const searchBtn$ = formDOM.select('#btn-search').events('click');
+  const searchInput$ = dom$.select('#search-input').events('change').map(ev => ev.target.value);
+  const searchBtn$ = dom$.select('#btn-search').events('click');
 
   const submit$ = searchInput$.map( inputValue => searchBtn$.map( () => inputValue ) )
     .flatten();

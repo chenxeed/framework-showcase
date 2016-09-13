@@ -3,7 +3,6 @@ import $ from 'jquery';
 
 // observable state
 function SearchInput( searchInputData ) {
-
   const get$ = searchInputData.get$;
 
   return {
