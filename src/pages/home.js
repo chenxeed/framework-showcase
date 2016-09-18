@@ -42,7 +42,7 @@ function start(){
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
       listsData : listsData,
-      todosData : xs.merge( todosComponent.add$, todosComponent.remove$ )
+      todosData : xs.merge( todosComponent.add$, todosComponent.remove$, todosComponent.toggleCheck$ )
     };
 
   }

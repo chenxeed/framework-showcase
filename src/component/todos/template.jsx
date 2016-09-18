@@ -9,7 +9,11 @@ return <div className="todos-component">
   <div>You have {data.length} todos:</div>
   <ul id="todo-list">
     { data.map( row =>
-      <li id={'todo-'+row.id} >{row.title} <button className="btn delete">X</button></li>
+      <li id={'todo-'+row.id} >
+        <input type="checkbox" className="is-checked" checked={row.is_checked} />
+        {row.title} 
+        <button className="btn delete">X</button>
+      </li>
     )}
   </ul>
 </div>
