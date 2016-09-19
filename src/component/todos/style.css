@@ -1,0 +1,3 @@
+.todos-component span.checked {
+  text-decoration: line-through;
+}

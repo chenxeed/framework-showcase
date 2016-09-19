@@ -1,11 +1,13 @@
 import xs from 'xstream';
 import vdom from './template.jsx';
+import './style.css';
 
 function Todos( {dom$, data$} ) {
 
   // event sources
   const clickAdd$ = dom$.select('#todo-add').events('click');
   const addInput$ = dom$.select('#todo-input').events('change');
+  const checkAll$ = dom$.select('#todo-togglecheck').events('click');
   const clickRow$ = dom$.select('#todo-list li').events('click');
   const clickDelete$ = clickRow$.filter( e => e.target.classList.contains('delete') );
   const clickChecked$ = clickRow$.filter( e => e.target.classList.contains('is-checked') );
@@ -18,6 +20,7 @@ function Todos( {dom$, data$} ) {
   const remove$ = clickDelete$.map( e => parseInt( e.currentTarget.id.replace('todo-', '') ) );
 
   const toggleCheck$ = clickChecked$.map( e => parseInt( e.currentTarget.id.replace('todo-', '') ) );
+  const toggleCheckAll$ = checkAll$.map( e => e.currentTarget.checked );
 
   // view
   const vdom$ = data$
@@ -30,7 +33,8 @@ function Todos( {dom$, data$} ) {
     vdom$,
     add$,
     remove$,
-    toggleCheck$
+    toggleCheck$,
+    toggleCheckAll$
   }
 }
 

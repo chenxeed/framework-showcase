@@ -6,12 +6,12 @@ return <div className="todos-component">
     <input type="text" id="todo-input" />
     <button id="todo-add">Add</button>
   </div>
-  <div>You have {data.length} todos:</div>
+  <div><input type="checkbox" id="todo-togglecheck" />You have {data.length} todos:</div>
   <ul id="todo-list">
     { data.map( row =>
       <li id={'todo-'+row.id} >
         <input type="checkbox" className="is-checked" checked={row.is_checked} />
-        {row.title} 
+        <span className={row.is_checked ? 'checked' : '' }>{row.title}</span>
         <button className="btn delete">X</button>
       </li>
     )}

@@ -24,7 +24,12 @@ function todosData( sources ) {
       .map( (id) => (state) => toggleCheck( state, id ) ) )
     .flatten();
 
-  const reducer$ = xs.merge( add$, remove$, toggleCheck$ );
+  const toggleCheckAll$ = sources
+    .map( ({toggleCheckAll$}) => toggleCheckAll$
+      .map( (is_checked) => (state) => toggleCheckAll( state, is_checked ) ) )
+    .flatten();
+
+  const reducer$ = xs.merge( add$, remove$, toggleCheck$, toggleCheckAll$ );
 
   const state$ = xs.of( [] )
     .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state) )
@@ -43,18 +48,23 @@ function add( todos, title ) {
   return todos;
 }
 
-// side-effect functions
 function remove( todos, id ) {
   todos.splice( findIndex( todos, {'id' : id} ), 1 );
   return todos;
 }
 
-// side-effect functions
 function toggleCheck( todos, id ) {
   const todo = find( todos, {'id': id} );
   if(todo)
     todo.is_checked = todo.is_checked ? false : true;
   return todos;
+}
+
+function toggleCheckAll( todos, is_checked ) {
+  return todos.map( (todo) => {
+    todo.is_checked = is_checked;
+    return todo;
+  });
 }
 
 export {

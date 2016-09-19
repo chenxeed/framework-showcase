@@ -45,7 +45,8 @@ function start(){
       todosData : xs.of({
         add$: todosComponent.add$,
         remove$: todosComponent.remove$,
-        toggleCheck$: todosComponent.toggleCheck$
+        toggleCheck$: todosComponent.toggleCheck$,
+        toggleCheckAll$: todosComponent.toggleCheckAll$
       })
     };
   }
