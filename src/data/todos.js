@@ -3,42 +3,34 @@ import $ from 'jquery';
 import {find, findIndex} from 'lodash';
 
 // observable state
-function Todos( todosData ) {
-  return {
-    add$ : todosData.add$,
-    remove$ : todosData.remove$,
-    toggleCheck$ : todosData.toggleCheck$
-  }
+function Todos( state$ ) {
+  return state$;
 }
 
 function todosData( sources ) {
 
-  const saved_todos = [];
+  const add$ = sources
+    .map( ({add$}) => add$
+      .map( (title) => (state) => add( state, title ) ) )
+    .flatten();
 
-  const add$ = xs.createWithMemory();
-  const remove$ = xs.createWithMemory();
-  const toggleCheck$ = xs.createWithMemory();
+  const remove$ = sources
+    .map( ({remove$}) => remove$
+      .map( (id) => (state) => remove( state, id ) ) )
+    .flatten();
 
-  add$.imitate(
-    sources.filter( ({type}) => type==='ADD')
-      .map( ({title}) => add(saved_todos, title) )
-  );
+  const toggleCheck$ = sources
+    .map( ({toggleCheck$}) => toggleCheck$
+      .map( (id) => (state) => toggleCheck( state, id ) ) )
+    .flatten();
+
+  const reducer$ = xs.merge( add$, remove$, toggleCheck$ );
+
+  const state$ = xs.of( [] )
+    .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state) )
+    .flatten();
   
-  remove$.imitate(
-    sources.filter( ({type}) => type==='REMOVE')
-      .map( ({id}) => remove(saved_todos, id) )
-  );
-  
-  toggleCheck$.imitate(
-    sources.filter( ({type}) => type==='TOGGLE_CHECK')
-      .map( ({id}) => toggleCheck(saved_todos, id) )
-  );
-  
-  return {
-    add$,
-    remove$,
-    toggleCheck$
-  }
+  return state$;
 }
 
 // side-effect functions
@@ -60,7 +52,8 @@ function remove( todos, id ) {
 // side-effect functions
 function toggleCheck( todos, id ) {
   const todo = find( todos, {'id': id} );
-  todo.is_checked = todo.is_checked ? false : true;
+  if(todo)
+    todo.is_checked = todo.is_checked ? false : true;
   return todos;
 }
 

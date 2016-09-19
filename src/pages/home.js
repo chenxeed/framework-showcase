@@ -42,9 +42,12 @@ function start(){
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
       listsData : listsData,
-      todosData : xs.merge( todosComponent.add$, todosComponent.remove$, todosComponent.toggleCheck$ )
+      todosData : xs.of({
+        add$: todosComponent.add$,
+        remove$: todosComponent.remove$,
+        toggleCheck$: todosComponent.toggleCheck$
+      })
     };
-
   }
 
   function driver( ) {
