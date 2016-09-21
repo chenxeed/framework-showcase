@@ -8,6 +8,8 @@ return <div className="todos-component">
   </div>
   <div>
     Toggle Check All <input type="checkbox" id="todo-togglecheck" /><br/>
+    <button id="todo-undo">Undo</button><br/>
+    <button id="todo-redo">Redo</button>
   </div>
   <div>
     You have {data.length} todo{data.length>1 ? 's' : ''}:

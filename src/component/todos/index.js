@@ -8,6 +8,8 @@ function Todos( {dom$, data$} ) {
   const clickAdd$ = dom$.select('#todo-add').events('click');
   const addInput$ = dom$.select('#todo-input').events('change');
   const checkAll$ = dom$.select('#todo-togglecheck').events('click');
+  const clickUndo$ = dom$.select('#todo-undo').events('click');
+  const clickRedo$ = dom$.select('#todo-redo').events('click');
   const clickRow$ = dom$.select('#todo-list li').events('click');
   const clickDelete$ = clickRow$.filter( e => e.target.classList.contains('delete') );
   const clickChecked$ = clickRow$.filter( e => e.target.classList.contains('is-checked') );
@@ -18,23 +20,25 @@ function Todos( {dom$, data$} ) {
     .flatten();
 
   const remove$ = clickDelete$.map( e => parseInt( e.currentTarget.dataset.id ) );
-
   const toggleCheck$ = clickChecked$.map( e => parseInt( e.currentTarget.dataset.id ) );
   const toggleCheckAll$ = checkAll$.map( e => e.currentTarget.checked );
+  const undo$ = clickUndo$;
+  const redo$ = clickRedo$;
+
+  // model
+  const model$ = data$.map( data => { return {data} });
 
   // view
-  const vdom$ = data$
-    .map( data => { return {data} }).startWith({
-      data : []
-    })
-    .map( ({data}) => vdom(data) );
+  const vdom$ = model$.map( ({data}) => vdom(data) );
 
   return {
     vdom$,
     add$,
     remove$,
     toggleCheck$,
-    toggleCheckAll$
+    toggleCheckAll$,
+    undo$,
+    redo$
   }
 }
 

@@ -10,6 +10,8 @@ import searchInputData from 'data/search_input';
 import postsData from 'data/posts';
 import todosData from 'data/todos';
 
+import makeHistory from 'utils/history';
+
 function start(){
 
   function main( sources ) {
@@ -23,7 +25,10 @@ function start(){
     });
     const todosComponent = Todos({
       dom$ : sources.todosDOM,
-      data$ : sources.todosData
+      data$ : xs.merge(
+        sources.todosData,
+        sources.todosHistory.map( ({history, index}) => history[index] )
+      )
     });
 
     // define data
@@ -39,6 +44,12 @@ function start(){
       toggleCheckAll$: todosComponent.toggleCheckAll$
     });
 
+    const todosHistory = xs.of({
+      add$: sources.todosData,
+      undo$: todosComponent.undo$,
+      redo$: todosComponent.redo$
+    });
+
     return {
       // components
       formDOM : formComponent.vdom$,
@@ -48,7 +59,8 @@ function start(){
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
       listsData,
-      todosData
+      todosData,
+      todosHistory
     };
   }
 
@@ -62,7 +74,8 @@ function start(){
       searchInputData,
       postsData,
       listsData : (stream$) => { return stream$ },
-      todosData
+      todosData,
+      todosHistory : makeHistory([])
     }
   }
 
