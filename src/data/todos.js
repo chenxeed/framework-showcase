@@ -2,11 +2,6 @@ import xs from 'xstream';
 import $ from 'jquery';
 import {find, findIndex} from 'lodash';
 
-// observable state
-function Todos( state$ ) {
-  return state$;
-}
-
 function todosData( sources ) {
 
   const add$ = sources
@@ -67,7 +62,4 @@ function toggleCheckAll( todos, is_checked ) {
   });
 }
 
-export {
-  Todos,
-  todosData
-};
+export default todosData;

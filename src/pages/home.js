@@ -6,9 +6,9 @@ import Form from 'component/form';
 import Lists from 'component/lists';
 import Todos from 'component/todos';
 
-import {SearchInput, searchInputData} from 'data/search_input';
-import {Posts, postsData} from 'data/posts';
-import {todosData} from 'data/todos';
+import searchInputData from 'data/search_input';
+import postsData from 'data/posts';
+import todosData from 'data/todos';
 
 function start(){
 
@@ -27,11 +27,17 @@ function start(){
     });
 
     // define data
-    const searchInputData = SearchInput( sources.searchInputData );
-    const postsData = Posts( sources.postsData );
+    const searchInputData = sources.searchInputData;
+    const postsData = sources.postsData;
     const listsData = searchInputData.get$.map( value =>
       postsData.get$.map( data => [value, data] )
     ).flatten();
+    const todosData = xs.of({
+      add$: todosComponent.add$,
+      remove$: todosComponent.remove$,
+      toggleCheck$: todosComponent.toggleCheck$,
+      toggleCheckAll$: todosComponent.toggleCheckAll$
+    });
 
     return {
       // components
@@ -41,13 +47,8 @@ function start(){
       // data
       searchInputData : formComponent.submit$,
       postsData : searchInputData.get$,
-      listsData : listsData,
-      todosData : xs.of({
-        add$: todosComponent.add$,
-        remove$: todosComponent.remove$,
-        toggleCheck$: todosComponent.toggleCheck$,
-        toggleCheckAll$: todosComponent.toggleCheckAll$
-      })
+      listsData,
+      todosData
     };
   }
 

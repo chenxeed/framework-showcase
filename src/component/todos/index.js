@@ -17,9 +17,9 @@ function Todos( {dom$, data$} ) {
     .map( inputValue => clickAdd$.map( () => inputValue ) )
     .flatten();
 
-  const remove$ = clickDelete$.map( e => parseInt( e.currentTarget.id.replace('todo-', '') ) );
+  const remove$ = clickDelete$.map( e => parseInt( e.currentTarget.dataset.id ) );
 
-  const toggleCheck$ = clickChecked$.map( e => parseInt( e.currentTarget.id.replace('todo-', '') ) );
+  const toggleCheck$ = clickChecked$.map( e => parseInt( e.currentTarget.dataset.id ) );
   const toggleCheckAll$ = checkAll$.map( e => e.currentTarget.checked );
 
   // view

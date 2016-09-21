@@ -1,15 +1,6 @@
 import xs from 'xstream';
 import $ from 'jquery';
 
-// observable state
-function Posts( postsData ) {
-  const get$ = postsData.get$;
-
-  return {
-    get$
-  }
-}
-
 function postsData( source$ ) {
   const get$ = xs.createWithMemory();
 
@@ -31,7 +22,4 @@ function postsData( source$ ) {
   }  
 }
 
-export {
-  Posts,
-  postsData
-};
+export default postsData;
