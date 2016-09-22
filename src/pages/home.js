@@ -31,11 +31,11 @@ function start(){
       )
     });
 
-    // define data
-    const searchInputData = sources.searchInputData;
-    const postsData = sources.postsData;
-    const listsData = searchInputData.get$.map( value =>
-      postsData.get$.map( data => [value, data] )
+    // define the source of data
+    const searchInputData = formComponent.submit$;
+    const postsData = sources.searchInputData.get$;
+    const listsData = sources.searchInputData.get$.map( value =>
+      sources.postsData.get$.map( data => [value, data] )
     ).flatten();
     const todosData = xs.of({
       add$: todosComponent.add$,
@@ -43,7 +43,6 @@ function start(){
       toggleCheck$: todosComponent.toggleCheck$,
       toggleCheckAll$: todosComponent.toggleCheckAll$
     });
-
     const todosHistory = xs.of({
       add$: sources.todosData,
       undo$: todosComponent.undo$,
@@ -56,8 +55,8 @@ function start(){
       listsDOM : listsComponent.vdom$,
       todosDOM : todosComponent.vdom$,
       // data
-      searchInputData : formComponent.submit$,
-      postsData : searchInputData.get$,
+      searchInputData,
+      postsData,
       listsData,
       todosData,
       todosHistory
