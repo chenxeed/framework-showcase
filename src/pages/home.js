@@ -20,31 +20,27 @@ function start(){
     const formComponent = Form({
       dom$ : sources.formDOM
     });
-    const listsComponent = Lists({
-      data$ : sources.listsData
-    });
-    const todosComponent = Todos({
-      dom$ : sources.todosDOM,
-      data$ : xs.merge(
-        sources.todosData,
-        sources.todosHistory.map( ({history, index}) => history[index] )
-      )
-    });
 
-    // define the source of data
     const searchInputData = formComponent.submit$;
     const postsData = sources.searchInputData.get$;
     const listsData = sources.searchInputData.get$.map( value =>
       sources.postsData.get$.map( data => [value, data] )
     ).flatten();
+    const listsComponent = Lists({
+      data$ : sources.listsData
+    });
+
+    const todosComponent = Todos({
+      dom$ : sources.todosDOM,
+      data$ : sources.todosData
+    });
+
+    // define the source of data
     const todosData = xs.of({
       add$: todosComponent.add$,
       remove$: todosComponent.remove$,
       toggleCheck$: todosComponent.toggleCheck$,
-      toggleCheckAll$: todosComponent.toggleCheckAll$
-    });
-    const todosHistory = xs.of({
-      add$: sources.todosData,
+      toggleCheckAll$: todosComponent.toggleCheckAll$,
       undo$: todosComponent.undo$,
       redo$: todosComponent.redo$
     });
@@ -58,8 +54,7 @@ function start(){
       searchInputData,
       postsData,
       listsData,
-      todosData,
-      todosHistory
+      todosData
     };
   }
 
@@ -73,8 +68,7 @@ function start(){
       searchInputData,
       postsData,
       listsData : (stream$) => { return stream$ },
-      todosData,
-      todosHistory : makeHistory([])
+      todosData : makeHistory( todosData )
     }
   }
 

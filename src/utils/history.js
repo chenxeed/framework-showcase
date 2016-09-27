@@ -1,35 +1,40 @@
 import xs from 'xstream';
 import $ from 'jquery';
 
-export default function makeHistory(first_value){
+export default function makeHistory(dataComponent){
 
-  return function( sources ){
+  return function( source$ ){
 
-    // save the data to history
-    const add$ = sources.map( ({add$}) => add$
-      .map( (new_data) => ({history, index}) => add(history, index, new_data) ) )
-    .flatten();
+    const history$ = xs.of({ history: [], index: -1 });
+
+    // trigger add
+    const add$ = dataComponent( source$ )
+      .map( ( state ) => ({history, index}) => add(history, index, state) )
 
     // trigger undo
-    const undo$ = sources.map( ({undo$}) => undo$
-      .map( () => ({history, index}) => undo(history, index) ) )
-    .flatten();
+    const undo$ = source$
+      .map( ({undo$}) => undo$
+        .map( () => ({history, index}) => undo(history, index) )
+      )
+      .flatten();
 
     // trigger redo
-    const redo$ = sources.map( ({redo$}) => redo$
-      .map( () => ({history, index}) => redo(history, index) ) )
-    .flatten();
+    const redo$ = source$
+      .map( ({redo$}) => redo$
+        .map( () => ({history, index}) => redo(history, index) )
+      )
+      .flatten();
 
+    // create reducer for undo/redo
     const reducer$ = xs.merge( add$, undo$, redo$ );
 
-    const state$ = xs.of( {
-      history: [first_value],
-      index: 0
-    })
-      .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state) )
+    const state$ = history$
+      .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state)
+        .map( ({history, index}) => history[index] )
+      )
       .flatten();
-    
-    return state$;
+
+    return state$.drop(1).filter( state => !!state );
 
   };
 

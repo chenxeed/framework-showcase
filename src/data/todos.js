@@ -2,29 +2,35 @@ import xs from 'xstream';
 import $ from 'jquery';
 import {find, findIndex} from 'lodash';
 
-function todosData( sources ) {
+function todosData( source$ ) {
 
-  const add$ = sources
+  const add$ = source$
     .map( ({add$}) => add$
       .map( (title) => (state) => add( state, title ) ) )
     .flatten();
 
-  const remove$ = sources
+  const remove$ = source$
     .map( ({remove$}) => remove$
       .map( (id) => (state) => remove( state, id ) ) )
     .flatten();
 
-  const toggleCheck$ = sources
+  const toggleCheck$ = source$
     .map( ({toggleCheck$}) => toggleCheck$
       .map( (id) => (state) => toggleCheck( state, id ) ) )
     .flatten();
 
-  const toggleCheckAll$ = sources
+  const toggleCheckAll$ = source$
     .map( ({toggleCheckAll$}) => toggleCheckAll$
       .map( (is_checked) => (state) => toggleCheckAll( state, is_checked ) ) )
     .flatten();
 
-  const reducer$ = xs.merge( add$, remove$, toggleCheck$, toggleCheckAll$ );
+  const replaceData$ = source$
+    .filter( ({replaceData$}) => !!replaceData$ )
+    .map( ({replaceData$}) => replaceData$
+      .map( (new_data) => (state) => new_data ) )
+    .flatten();
+
+  const reducer$ = xs.merge( add$, remove$, toggleCheck$, toggleCheckAll$, replaceData$ );
 
   const state$ = xs.of( [] )
     .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state) )
