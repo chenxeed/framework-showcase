@@ -1,5 +1,5 @@
 import {html} from 'snabbdom-jsx';
-export default (data) => {
+export default ({data, canUndo, canRedo}) => {
 return <div className="todos-component">
   <h2>To-Do</h2>
   <div>
@@ -8,8 +8,8 @@ return <div className="todos-component">
   </div>
   <div>
     Toggle Check All <input type="checkbox" id="todo-togglecheck" /><br/>
-    <button id="todo-undo">Undo</button><br/>
-    <button id="todo-redo">Redo</button>
+    <button id="todo-undo" disabled={!canUndo} >Undo</button><br/>
+    <button id="todo-redo" disabled={!canRedo}>Redo</button>
   </div>
   <div>
     You have {data.length} todo{data.length>1 ? 's' : ''}:

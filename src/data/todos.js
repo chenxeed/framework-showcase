@@ -1,5 +1,6 @@
 import xs from 'xstream';
 import $ from 'jquery';
+import historyUtils from 'utils/history';
 import {find, findIndex} from 'lodash';
 
 function todosData( source$ ) {
@@ -24,34 +25,34 @@ function todosData( source$ ) {
       .map( (is_checked) => (state) => toggleCheckAll( state, is_checked ) ) )
     .flatten();
 
-  const replaceData$ = source$
-    .filter( ({replaceData$}) => !!replaceData$ )
-    .map( ({replaceData$}) => replaceData$
-      .map( (new_data) => (state) => new_data ) )
-    .flatten();
 
-  const reducer$ = xs.merge( add$, remove$, toggleCheck$, toggleCheckAll$, replaceData$ );
+  const reducer$ = xs.merge( add$, remove$, toggleCheck$, toggleCheckAll$ );
 
-  const state$ = xs.of( [] )
-    .map( state => reducer$.fold( (acc, reducer) => reducer(acc), state) )
-    .flatten();
+  const historyState$ = historyUtils({
+    reducer$,
+    undo$ : source$.map( ({undo$}) => undo$ ).flatten(),
+    redo$ : source$.map( ({redo$}) => redo$ ).flatten(),
+    initialValue : []
+  });
   
-  return state$;
+  return historyState$;
 }
 
 // side-effect functions
 function add( todos, title ) {
-  todos.push({
+  const new_todos = todos.slice();
+  new_todos.push({
     id: Math.round( Math.random()*100000000 ), // random way to get random id
     title: title,
     is_checked: false
   });
-  return todos;
+  return new_todos;
 }
 
 function remove( todos, id ) {
-  todos.splice( findIndex( todos, {'id' : id} ), 1 );
-  return todos;
+  const new_todos = todos.slice();
+  new_todos.splice( findIndex( todos, {'id' : id} ), 1 );
+  return new_todos;
 }
 
 function toggleCheck( todos, id ) {

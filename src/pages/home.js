@@ -10,8 +10,6 @@ import searchInputData from 'data/search_input';
 import postsData from 'data/posts';
 import todosData from 'data/todos';
 
-import makeHistory from 'utils/history';
-
 function start(){
 
   function main( sources ) {
@@ -68,7 +66,7 @@ function start(){
       searchInputData,
       postsData,
       listsData : (stream$) => { return stream$ },
-      todosData : makeHistory( todosData )
+      todosData
     }
   }
 

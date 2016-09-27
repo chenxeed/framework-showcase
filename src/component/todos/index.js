@@ -18,7 +18,6 @@ function Todos( {dom$, data$} ) {
   const add$ = addInput$.map( e => e.target.value )
     .map( inputValue => clickAdd$.map( () => inputValue ) )
     .flatten();
-
   const remove$ = clickDelete$.map( e => parseInt( e.currentTarget.dataset.id ) );
   const toggleCheck$ = clickChecked$.map( e => parseInt( e.currentTarget.dataset.id ) );
   const toggleCheckAll$ = checkAll$.map( e => e.currentTarget.checked );
@@ -26,10 +25,17 @@ function Todos( {dom$, data$} ) {
   const redo$ = clickRedo$;
 
   // model
-  const model$ = data$.map( data => { return {data} });
+  const model$ = data$
+    .map( ({history, index, canUndo, canRedo}) => {
+      return {
+        data: history[index],
+        canUndo,
+        canRedo
+      }
+    });
 
   // view
-  const vdom$ = model$.map( ({data}) => vdom(data) );
+  const vdom$ = model$.map( (state) => vdom(state) );
 
   return {
     vdom$,
