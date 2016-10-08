@@ -1,3 +1,8 @@
+/**
+ * The native (no framework) way of writing JS for search form, get post data,
+ * and show it to list
+ */
+
 define(['jquery'], function($){
 
 	let DATA = [];

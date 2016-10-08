@@ -10,6 +10,7 @@ function Todos( {dom$, data$} ) {
   const checkAll$ = dom$.select('#todo-togglecheck').events('click');
   const clickUndo$ = dom$.select('#todo-undo').events('click');
   const clickRedo$ = dom$.select('#todo-redo').events('click');
+  const clickReset$ = dom$.select('#todo-reset').events('click');
   const clickRow$ = dom$.select('#todo-list li').events('click');
   const clickDelete$ = clickRow$.filter( e => e.target.classList.contains('delete') );
   const clickChecked$ = clickRow$.filter( e => e.target.classList.contains('is-checked') );
@@ -23,6 +24,7 @@ function Todos( {dom$, data$} ) {
   const toggleCheckAll$ = checkAll$.map( e => e.currentTarget.checked );
   const undo$ = clickUndo$;
   const redo$ = clickRedo$;
+  const reset$ = clickReset$;
 
   // model
   const model$ = data$
@@ -44,7 +46,8 @@ function Todos( {dom$, data$} ) {
     toggleCheck$,
     toggleCheckAll$,
     undo$,
-    redo$
+    redo$,
+    reset$
   }
 }
 

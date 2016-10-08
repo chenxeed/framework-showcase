@@ -10,6 +10,7 @@ return <div className="todos-component">
     Toggle Check All <input type="checkbox" id="todo-togglecheck" /><br/>
     <button id="todo-undo" disabled={!canUndo} >Undo</button><br/>
     <button id="todo-redo" disabled={!canRedo}>Redo</button>
+    <button id="todo-reset" disabled={!canUndo && !canRedo}>Reset</button>
   </div>
   <div>
     You have {data.length} todo{data.length>1 ? 's' : ''}:

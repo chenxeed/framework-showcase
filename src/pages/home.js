@@ -2,13 +2,13 @@ import Cycle from '@cycle/xstream-run';
 import {makeDOMDriver} from '@cycle/dom';
 import xs from 'xstream';
 
-import Form from 'component/form';
-import Lists from 'component/lists';
-import Todos from 'component/todos';
+import Form from 'views/form';
+import Lists from 'views/lists';
+import Todos from 'views/todos';
 
-import searchInputData from 'data/search_input';
-import postsData from 'data/posts';
-import todosData from 'data/todos';
+import searchInputData from 'datas/search_input';
+import postsData from 'datas/posts';
+import todosData from 'datas/todos';
 
 function start(){
 
@@ -40,7 +40,8 @@ function start(){
       toggleCheck$: todosComponent.toggleCheck$,
       toggleCheckAll$: todosComponent.toggleCheckAll$,
       undo$: todosComponent.undo$,
-      redo$: todosComponent.redo$
+      redo$: todosComponent.redo$,
+      reset$: todosComponent.reset$
     });
 
     return {

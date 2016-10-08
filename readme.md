@@ -8,18 +8,24 @@ The concept of the framework was, to divide a web pages into different component
 
 The modularization of this framework was:
 
-- component
-	: Component of the web page. Each of it is attachable to any pages / places,
-	doesn't require any data / state. Component are consist of:
+- views
+	: Views of the web page. Each of it is attachable to any pages / places,
+	doesn't hold any data / state. Views are consist of:
+	
 	- index.js
-		: The controller of the component that defines the component logic, the template used, and also the observable states of the component.
+		: The controller of the view that defines the view logic, the template used, and also the observable states of the view. It receives <Object>source such as:
+		- <State>dom$ : the virtual DOM state created by cycle DOM driver
+		- <State>data$ : the data that is going to be used as the model of the view
 	- template.jsx
 		: The HTML format of the component, that will be used by index.js as the vdom template.
 	- style.css
 		: The styling for the HTML of the component, that is required by index.js
-- data
-	: Data or states of the web page. Each of it has its own data that can interact with component based on each pages setup.
+
+- datas
+	: Data or states of the web page. Data stores the state of the component based on each pages setup.
+
 - pages
 	: Main Controller of each pages. It connects the component and data it uses, and defines the logic of the application on the page.
+	
 - main.js
 	: The entry of the scripts for Module Dependencies to start the application. It will use script from pages based on the current page.
