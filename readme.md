@@ -29,3 +29,9 @@ The modularization of this framework was:
 	
 - main.js
 	: The entry of the scripts for Module Dependencies to start the application. It will use script from pages based on the current page.
+
+## Apps Diagram
+
+For reference of the current application, here is the flow of the current apps:
+
+![apps flow diagram](https://cloud.githubusercontent.com/assets/3530355/19324264/e8fe9bf0-90ea-11e6-8622-2a96cb98dff4.png)
