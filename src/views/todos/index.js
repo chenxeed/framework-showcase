@@ -30,7 +30,7 @@ function Todos( {dom$, data$} ) {
   const model$ = data$
     .map( ({history, index, canUndo, canRedo}) => {
       return {
-        data: history[index],
+        data: history[index].toJS(),
         canUndo,
         canRedo
       }

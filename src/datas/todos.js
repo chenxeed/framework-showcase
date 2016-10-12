@@ -1,6 +1,6 @@
 import xs from 'xstream';
 import historyUtils from 'utils/history';
-import {find, findIndex} from 'lodash';
+import {List, Map} from 'immutable';
 
 /**
  * Stores the state of the todos data. The data is extended by utils/history to
@@ -22,7 +22,7 @@ import {find, findIndex} from 'lodash';
  */
 function todosData( source$ ) {
 
-  const initialValue = [];
+  const initialValue = List.of();
 
   const add$ = source$
     .map( ({add$}) => add$
@@ -59,33 +59,29 @@ function todosData( source$ ) {
 
 // side-effect functions
 function add( todos, title ) {
-  const new_todos = todos.slice();
-  new_todos.push({
+  const new_todo = Map({
     id: Math.round( Math.random()*100000000 ), // random way to get random id
     title: title,
     is_checked: false
   });
-  return new_todos;
+  return todos.push( new_todo );
 }
 
 function remove( todos, id ) {
-  const new_todos = todos.slice();
-  new_todos.splice( findIndex( todos, {'id' : id} ), 1 );
-  return new_todos;
+  return todos.delete(
+    todos.findIndex( (todo) => todo.get('id') === id )
+  );
 }
 
 function toggleCheck( todos, id ) {
-  const todo = find( todos, {'id': id} );
-  if(todo)
-    todo.is_checked = todo.is_checked ? false : true;
-  return todos;
+  return todos.update(
+    todos.findIndex( (todo) => todo.get('id') === id ),
+    (todo) => todo.set('is_checked', !todo.get('is_checked') )
+  );
 }
 
 function toggleCheckAll( todos, is_checked ) {
-  return todos.map( (todo) => {
-    todo.is_checked = is_checked;
-    return todo;
-  });
+  return todos.map( (todo) => todo.set('is_checked', is_checked ) );
 }
 
 export default todosData;

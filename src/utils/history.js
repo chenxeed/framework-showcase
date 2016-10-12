@@ -63,12 +63,7 @@ export default function historyUtils( sources ){
 
 function add( history, index, data ) {
   const new_history = history.slice(0, index+1);
-  const new_data = (function(){
-    if( Array.isArray( data ) ) return data.slice();
-    else if( typeof data === 'object' ) return $.extend({}, data);
-    else return data;
-  })( data );
-  new_history.push(new_data);
+  new_history.push(data);
   const new_index = new_history.length-1;
   return stateFormat( new_history, new_index );
 }
