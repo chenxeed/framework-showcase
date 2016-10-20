@@ -8,9 +8,7 @@
     - First thought is to pass the *todosState* into historyUtils and use historyUtils as the published data state.
     - The data flow is like this:
 
-    action ----> todosState$ ----> add$ ----> updateHistory ----> historyState$ --> view
-    undo$  ------------------------------/ 
-    redo$  -----------------------------/ 
+    ![todos undoable flow](https://cloud.githubusercontent.com/assets/3530355/19552091/87e1c952-96d8-11e6-9505-015a1953b996.png)
 
 3. Explain the initial problem on making todo undoable:
   
