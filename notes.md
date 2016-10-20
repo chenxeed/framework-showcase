@@ -1,4 +1,6 @@
-1. Explain the data flow of todo
+1. Explain the introductory of redux concept, and data flow of todo
+
+![untitled diagram 1](https://cloud.githubusercontent.com/assets/3530355/19550350/3d941ff8-96d3-11e6-85d3-06f364af1a59.png)
 
 2. Explain the plan to make todo undoable
 
