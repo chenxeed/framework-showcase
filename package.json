@@ -5,12 +5,13 @@
   "main": "ugly.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --watch && node server.js"
+    "start": "webpack --watch & node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@cycle/dom": "^12.2.4",
+    "@cycle/xstream-run": "^3.1.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.2",
     "babel-plugin-transform-react-jsx": "^6.8.0",
@@ -20,9 +21,11 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-runtime": "^6.5.0",
     "css-loader": "^0.25.0",
+    "express": "^4.14.0",
     "html-loader": "^0.4.3",
     "http": "0.0.0",
     "immutable": "^3.8.1",
+    "jquery": "^3.1.1",
     "lodash": "^4.15.0",
     "snabbdom-jsx": "^0.3.1",
     "socket.io": "^1.5.0",
