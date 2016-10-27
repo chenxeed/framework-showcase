@@ -51,11 +51,13 @@
     ```
 
     So one thought of solution is to update the todosState whenever we undo/redo, right? But that flow is not working with the concept of data flow.
-
+    
+    ```
     action ----> todosState$ ----> add$ ----> updateHistory ----> historyState$ --> view
     undo$  --/ 
     redo$  -/ 
-
+    ````
+    
 4. Explain the solution to handle the flow
 
     The current situation to handle this is to not store the **todosState** and **historyState** differently, but to put the **todosState** as in the **historyState.history** directly. So in this case, we let the **historyState** to hold the todos reducer that will modify the **historyState:history**.
