@@ -60,10 +60,6 @@
 
     The current situation to handle this is to not store the **todosState** and **historyState** differently, but to put the **todosState** as in the **historyState.history** directly. So in this case, we let the **historyState** to hold the todos reducer that will modify the **historyState:history**.
 
-    action -----> add$ ----> updateHistory ----> historyState$ --> view
-    undo$  --------------/ 
-    redo$  -------------/
-
     1. add "pen"
     ```
     historyState$ : {
@@ -88,7 +84,7 @@
     }
     => return ["pen"]
     ```
-    4. add "applepen" (problem occurs here)
+    4. add "applepen"
     ```
     => historyState$ : {
       history : [ ["pen"], ["pen", "applepen"] ],
